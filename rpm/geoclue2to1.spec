@@ -7,8 +7,7 @@ Group:          System/Daemons
 URL:            https://github.com/rinigus/geoclue2to1
 Source0:        %{name}-%{version}.tar.bz2
 Source1:        geoclue2to1.service
-Source2:        org.freedesktop.GeoClue2.service
-Source3:        geoclue2to1.conf
+Source2:        geoclue2to1.conf
 
 BuildRequires:  cmake
 BuildRequires:  pkgconfig(dbus-glib-1)
@@ -48,7 +47,7 @@ Requires:       %{name}%{?_isa} = %{version}-%{release}
 %cmake_install
 
 %{__install} -Dp -m0644 %{SOURCE1} %{buildroot}%{_userunitdir}/geoclue2to1.service
-%{__install} -Dp -m0644 %{SOURCE3} %{buildroot}%{_datadir}/dbus-1/system.d/geoclue2to1.conf
+%{__install} -Dp -m0644 %{SOURCE2} %{buildroot}%{_datadir}/dbus-1/system.d/geoclue2to1.conf
 
 %preun
 # in case of complete removal, stop and disable
