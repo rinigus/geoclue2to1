@@ -3,6 +3,9 @@
 #include <cmath>
 #include <utility>
 
+// Number of location updates while velocity is considered fresh
+const size_t VELOCITY_FRESH_STEPS = 2;
+
 Geoclue1Backend::Geoclue1Backend(GDBusConnection * /*connection*/) {
     // GeoClue1 runs on the *session* bus, not the system bus.
     // We therefore connect to the session bus here, independently of
@@ -135,11 +138,11 @@ void Geoclue1Backend::on_position_changed(GDBusConnection * /*connection*/,
     pos.timestamp_iso8601 = std::to_string(timestamp_int);
 
     // Merge velocity data if available and fresh
-    if (backend->m_last_velocity.is_fresh) {
+    if (backend->m_last_velocity.is_fresh > 0) {
         pos.speed = backend->m_last_velocity.speed;
         pos.heading = backend->m_last_velocity.direction;
         pos.climb = backend->m_last_velocity.climb;
-        backend->m_last_velocity.is_fresh = false;
+        backend->m_last_velocity.is_fresh -= 1;
         // g_debug("on_position_changed: merged velocity: speed=%f, heading=%f, climb=%f",
         // pos.speed, pos.heading, pos.climb);
     } else {
@@ -176,7 +179,7 @@ void Geoclue1Backend::on_velocity_changed(GDBusConnection * /*connection*/,
     backend->m_last_velocity.speed = std::isnan(speed) ? -1.0 : speed;
     backend->m_last_velocity.direction = std::isnan(direction) ? -1.0 : direction;
     backend->m_last_velocity.climb = std::isnan(climb) ? -1.0 : climb;
-    backend->m_last_velocity.is_fresh = true;
+    backend->m_last_velocity.is_fresh = VELOCITY_FRESH_STEPS;
 
     // Also call the velocity callback if set (for logging/debugging)
     if (backend->m_velocity_callback) {

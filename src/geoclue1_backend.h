@@ -59,7 +59,7 @@ class Geoclue1Backend {
 
     // Last velocity data for merging with position updates
     struct {
-        bool is_fresh = false;
+        int is_fresh = 0;
         double speed = -1.0;     // m/s
         double direction = -1.0; // degrees from north
         double climb = -1.0;     // m/s vertical speed
