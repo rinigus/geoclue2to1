@@ -1,0 +1,15 @@
+[Unit]
+Description=GeoClue2 to GeoClue1 bridge daemon
+After=network.target dbus.service
+Requires=dbus.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/geoclue2to1
+Restart=on-failure
+
+# Environment for debug can be set via systemd drop-in if needed
+# Environment=G_MESSAGES_DEBUG=all
+
+[Install]
+WantedBy=post-user-session.target
