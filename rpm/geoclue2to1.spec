@@ -1,5 +1,5 @@
 Name:           geoclue2to1
-Version:        0.1.0
+Version:        0.1.1
 Release:        1
 Summary:        GeoClue2 D-Bus API bridge backed by GeoClue1 on Sailfish OS
 License:        BSD
